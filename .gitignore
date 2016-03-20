@@ -1,3 +1,5 @@
+*.gz
+
 # Object files
 *.o
 *.ko

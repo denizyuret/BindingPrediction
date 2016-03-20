@@ -1,0 +1,49 @@
+2016-03-20  Deniz Yuret  <dyuret@ku.edu.tr>
+
+	* model03.jl: more fc layers: add +.5% => 66.2@8K
+	C=64,128,256
+	F=256 %64@512 %65.4@1K 66.2@8K
+	F=128 and 512 are similar
+	F=128,128 %64.3@512 %65.6@1K 66.2@8K
+
+	* model02.jl: more conv layers: add +1% => 65.8@8K
+	C=64,128 %64@1K %65@8K
+	C=128,256 similar
+	C=64,128,256 %65@1K %65.8@8K
+	C=64,128,256,512 %62.4@256 %63.8@512 %65.0@1K
+
+	* model01.jl: initial experiments with a cbfp+wbf: 64.7@32K
+
+	%63@1024 C=512 W=3 B=128
+	crosses %64.7 @32K
+	C=256 or C=512 not better, W=5 similar, tanh similar
+
+	* TODO:
+	# gclip
+	# more conv layers
+	# more fc layers
+	# embedding layer
+	# tanh vs relu
+
+	* chars: there is N in addition to ACTG:
+
+	* wc: each sequence is 51 long.  approx 25M positive 25M negative
+	examples.  17M unique in each case.
+
+	dyuret@biyofiz-4-0:~/alkan[0]$ zcat NeuroD2\ ChIP-SEQ-antibody1.fastq.gz | awk 'NR%4==2' | wc -l
+	26767599
+	dyuret@biyofiz-4-0:~/alkan[35]$ zcat GFP\ ChIP-SEQ-antibody1.fastq.gz | awk 'NR%4==2' | wc -l
+	24495706
+	dyuret@biyofiz-4-0:~/alkan[96]$ zcat NeuroD2\ ChIP-SEQ-antibody1.fastq.gz | awk 'NR%4==2' | rcount | wc -l
+	17483930
+	dyuret@biyofiz-4-0:~/alkan[0]$ zcat GFP\ ChIP-SEQ-antibody1.fastq.gz | awk 'NR%4==2' | rcount | wc -l
+	17615277
+
+	dyuret@biyofiz-4-0:~/alkan[0]$ zcat NeuroD2\ ChIP-SEQ-antibody1.fastq.gz | awk 'NR%4==2' | sort -u > foo.neuro.sortu
+	dyuret@biyofiz-4-0:~/alkan[213]$ zcat GFP\ ChIP-SEQ-antibody1.fastq.gz  | awk 'NR%4==2' | sort -u > foo.gfp.sortu
+	dyuret@biyofiz-4-0:~/alkan[182]$ wc -l *.sortu
+	17615277 foo.gfp.sortu
+	17483930 foo.neuro.sortu
+	35099207 total
+	dyuret@biyofiz-4-0:~/alkan[1]$ comm -12 *.sortu | wc -l
+	553500
