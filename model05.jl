@@ -25,7 +25,7 @@ function rnnforw(f, x)
     return ypred
 end
 
-function train05(; N=2^10, lr=0.001, adam=true, nbatch=128, gclip=0, hidden=32, seed=0, o...)
+function train05(; N=2^10, lr=0.001, adam=true, nbatch=128, gclip=0, hidden=256, seed=0, o...)
     seed > 0 && setseed(seed)
     global f = compile(:model05; hidden=hidden, o...)
     setp(f, lr=lr, adam=adam)
